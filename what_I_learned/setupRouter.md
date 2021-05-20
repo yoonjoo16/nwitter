@@ -9,11 +9,13 @@ npm i react-router-dom
 Ok, first change App.js in components so that it calls router.
 
 ```
-import React from 'react';
-import AppRouter from './Router';
+import React, {useState} from 'react';
+import AppRouter from 'components/Router';
+import fbase from "fbase";
 
 function App() {
-  return <AppRouter />;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  return <AppRouter  isLoggedIn={isLoggedIn}/>;
 }
 
 export default App;
@@ -22,13 +24,12 @@ export default App;
 And my router looks like this:
 
 ```
-import React, {useState} from "react";
+import React from "react";
 import {HashRouter as Router, Route, Switch }from "react-router-dom";
-import Auth from "../routes/Auth";
-import Home from "../routes/Home";
+import Auth from "routes/Auth";
+import Home from "routes/Home";
 
-const AppRouter =  () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+const AppRouter =  ({isLoggedIn}) => {    
     return (
         <Router>
         <Switch>

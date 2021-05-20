@@ -13,7 +13,7 @@ REACT_APP_MESSAGIN_ID =
 REACT_APP_APP_ID =
 ```
 
-Make a file in src `firebase.js`, and copy and paste the scripts for Firebase configuration. 
+Make a file in src `fbase.js`, and copy and paste the scripts for Firebase configuration. 
 ```
 import firebase from "firebase/app";
 
@@ -31,7 +31,7 @@ export default  firebase.initializeApp(firebaseConfig);
 
 In index.js, add
 ```
-import firebase from "./firebase";
+import fbase from "fbase";
 ```
 
 and add '.env' in gitignore.
