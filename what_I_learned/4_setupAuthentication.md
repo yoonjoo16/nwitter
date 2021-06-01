@@ -185,3 +185,45 @@ export default App;
 ```
 
 First, we create a init-state. After rendering, useEffect executes onAuthStateChanged (https://firebase.google.com/docs/reference/js/firebase.auth.Auth#onauthstatechanged). This is kind of 'observer', watching if someone is logging in/out. After detecting user/no-user, it changes the state 'isLoggedIn', and change even init to true. It means, init will be false until onAuthSateChange is done, and the router will be called after init becomes true. 
+
+
+Now, socialLogin. 
+https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signinwithpopup
+It says that we get 'provider' using `firebase.auth.GoogleAuthProvider()` and then, we can use the provider to login, like `auth.signInWithPopup(provider)`. Because this returns Promise <UserCredential>, we use async/await. 
+```
+const onSocialClick = async(event) => {
+        const {target: {name}} = event;
+        let provider;
+        if(name === "google"){
+            provider = new firebaseInstance.auth.GoogleAuthProvider();
+        }else if(name === "github"){
+            provider = new firebaseInstance.auth.GithubAuthProvider();
+        }
+        await authService.signInWithPopup(provider);
+}
+```
+And now we can add this in the buttons for social-login. 
+
+Added logout button in Profile.js, 
+```
+const Profile = () => {
+    const onLogOutClick = () => authService.signOut();
+    return (<>
+        <button onClick = {onLogOutClick}>Log out</button>
+        </>)
+}
+```
+It works, but after logging out it does not redirect page. For this, we can add `<Redirect from ="*" to "/" />` after `<Route ...> </Route>`, or a hook `useHistory from 'react-router-dom'`.
+
+```
+const Profile = () => {
+    const history = useHistory();
+    const onLogOutClick = () => {
+        authService.signOut();
+        history.push("/");
+    }
+    return (<>
+        <button onClick = {onLogOutClick}>Log out</button>
+        </>)
+}
+```
